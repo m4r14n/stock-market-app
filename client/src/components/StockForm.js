@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-const StockForm = ({ onQuery }) => {
+const StockForm = ({
+  form,
+  handleSubmit
+}) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [maxFunds, setMaxFunds] = useState('');
 
-  const handleQuery = () => {
+  const onSubmit = () => {
     if (startTime && endTime && maxFunds) {
-      onQuery({ startTime, endTime, maxFunds });
+      handleSubmit({ startTime, endTime, maxFunds });
     } else {
       alert('Please fill in all fields');
     }
@@ -30,7 +33,7 @@ const StockForm = ({ onQuery }) => {
         <input type="number" value={maxFunds} onChange={e => setMaxFunds(e.target.value)} />
       </label>
       <br />
-      <button onClick={handleQuery}>Get Recommendations</button>
+      <button onClick={onSubmit}>Get Recommendations</button>
     </div>
   );
 };

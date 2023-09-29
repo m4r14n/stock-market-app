@@ -6,7 +6,7 @@ import { getStockRecommendation } from './services/stockService';
 function App() {
   const [result, setResult] = useState(null);
 
-  const handleQuery = async ({ startTime, endTime, maxFunds }) => {
+  const handleSubmit = async ({ startTime, endTime, maxFunds }) => {
     try {
       const recommendation = await getStockRecommendation(startTime, endTime, maxFunds);
       setResult(recommendation);
@@ -18,7 +18,7 @@ function App() {
   return (
     <div>
       <h1>Stock Recommendation App</h1>
-      <StockForm onQuery={handleQuery} />
+      <StockForm handleSubmit={handleSubmit} />
       <StockResults result={result} />
     </div>
   );
