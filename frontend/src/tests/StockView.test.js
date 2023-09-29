@@ -1,24 +1,23 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import StockView from '../components/StockView';
-
 
 describe('StockView', () => {
   it('renders the form correctly', () => {
-    const { getByLabelText, getByText } = render(<StockView />);
-    expect(getByLabelText('Start Time (seconds)')).toBeInTheDocument();
-    expect(getByLabelText('End Time (seconds)')).toBeInTheDocument();
-    expect(getByLabelText('Available Budget')).toBeInTheDocument();
-    expect(getByText('Inquire')).toBeInTheDocument();
+    render(<StockView />);
+    expect(screen.getByLabelText('Start Time (seconds)')).toBeInTheDocument();
+    expect(screen.getByLabelText('End Time (seconds)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Available Budget')).toBeInTheDocument();
+    expect(screen.getByText('Inquire')).toBeInTheDocument();
   });
 
   it('displays an error message when the query fails', () => {
     const stockControllerMock = {
       handleQuery: jest.fn().mockReturnValue({ error: 'Invalid input' }),
     };
-    const { getByText } = render(<StockView stockController={stockControllerMock} />);
-    fireEvent.click(getByText('Inquire'));
-    expect(getByText('Invalid input')).toBeInTheDocument();
+    render(<StockView stockController={stockControllerMock} />);
+    fireEvent.click(screen.getByText('Inquire'));
+    expect(screen.getByText('Invalid input')).toBeInTheDocument();
   });
 
   it('displays the query result when the query succeeds', () => {
@@ -31,11 +30,11 @@ describe('StockView', () => {
         profit: 500,
       }),
     };
-    const { getByText } = render(<StockView stockController={stockControllerMock} />);
-    fireEvent.click(getByText('Inquire'));
-    expect(getByText('Buy at second 10, Sell at second 20')).toBeInTheDocument();
-    expect(getByText('Number of stocks bought: 100')).toBeInTheDocument();
-    expect(getByText('Number of stocks sold: 50')).toBeInTheDocument();
-    expect(getByText('Profit: 500')).toBeInTheDocument();
+    render(<StockView stockController={stockControllerMock} />);
+    fireEvent.click(screen.getByText('Inquire'));
+    expect(screen.getByText('Buy at second 10, Sell at second 20')).toBeInTheDocument();
+    expect(screen.getByText('Number of stocks bought: 100')).toBeInTheDocument();
+    expect(screen.getByText('Number of stocks sold: 50')).toBeInTheDocument();
+    expect(screen.getByText('Profit: 500')).toBeInTheDocument();
   });
 });
