@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import StockForm from './components/StockForm';
 import StockResults from './components/StockResults';
+import { getStockRecommendation } from './services/stockService';
 
 function App() {
   const [result, setResult] = useState(null);
 
-  const handleQuery = ({ startTime, endTime, maxFunds }) => {
-    fetch(`http://localhost:5000/api/stock-recommendation?start_time=${startTime}&end_time=${endTime}&max_funds=${maxFunds}`)
-      .then(response => response.json())
-      .then(data => setResult(data))
-      .catch(error => console.error('Error:', error));
+  const handleQuery = async ({ startTime, endTime, maxFunds }) => {
+    try {
+      const recommendation = await getStockRecommendation(startTime, endTime, maxFunds);
+      setResult(recommendation);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
