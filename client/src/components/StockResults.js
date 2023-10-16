@@ -4,8 +4,6 @@ const StockResults = ({ result }) => {
   if (!result) return null;
 
   const { buy_price, sell_price, buy_time, sell_time, stocks_bought, profit } = result;
-
-  console.log(buy_time);
   
   return (
     <div>
