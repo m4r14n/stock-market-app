@@ -1,33 +1,45 @@
-const generateStockData = require('./data/stockData');
+const fs = require('fs');
+
+// Define the file path
+const filePath = 'server/data/stockData.json';
+// Read the file
+let stockData;
+try {
+  const data = fs.readFileSync(filePath, 'utf8');
+  stockData = JSON.parse(data);
+  console.log('JSON data:', stockData);
+} catch (error) {
+  console.error('Error reading or parsing JSON:', error);
+}
 
 const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) => {
   let minPrice = Infinity;
   let maxProfit = 0;
-  let bestPriceToBuy = null; //store the price at which a stock is bought during the most profitable trading scenario.
-  let bestPriceToSell = null; //store the price at which a stock is sold during the most profitable trading scenario.
-  let buyDate = null; //store the date at which a stock is bought during the most profitable trading scenario.
-  let sellDate = null; //store the date at which a stock is sold during the most profitable trading scenario.
+  let bestPriceToBuy = null;
+  let bestPriceToSell = null;
+  let buyDate = null;
+  let sellDate = null;
   let stocksBought = 0;
   let profit = 0;
+  
 
   for (let i = 0; i < data.length; i++) {
-    const currentTimestamp = data[i].timestamp;
+    const currentTimestamp = new Date(data[i].timestamp);
     const currentPrice = data[i].price;
 
     if (currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp) {
-      if (currentPrice < minPrice) {
+      if (currentPrice < minPrice && currentPrice <= maxFunds) {
         minPrice = currentPrice;
+        bestPriceToBuy = currentPrice;
+        buyDate = new Date(data[i].timestamp);
       } else if (currentPrice - minPrice > maxProfit && currentPrice <= maxFunds) {
         maxProfit = currentPrice - minPrice;
         bestPriceToBuy = minPrice;
         bestPriceToSell = currentPrice;
         buyDate = new Date(data[i - 1].timestamp);
-        sellDate = new Date(currentTimestamp);
+        sellDate = new Date(data[i].timestamp);
         stocksBought = maxFunds / minPrice;
         profit = maxProfit * stocksBought;
-      } else if (currentPrice > bestPriceToSell && currentPrice <= maxFunds) {
-        bestPriceToSell = currentPrice;
-        minPrice = currentPrice - maxProfit;
       }
     }
   }
@@ -35,11 +47,9 @@ const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) =
   return { bestPriceToBuy, bestPriceToSell, buyDate, sellDate, stocksBought, profit };
 };
 
-const stockData = generateStockData('2023-09-01T09:00:00Z', '2023-09-01T10:00:00Z');
-
 function getStockRecommendation(req, res) {
-  const startTime = req.query.start_time || '';
-  const endTime = req.query.end_time || '';
+  const startTime = new Date(req.query.start_time) || '';
+  const endTime = new Date(req.query.end_time) || '';
   const maxFunds = req.query.max_funds || '';
 
   const {
@@ -51,13 +61,18 @@ function getStockRecommendation(req, res) {
     profit
   } = findMostProfitableTimes(stockData, startTime, endTime, maxFunds);
 
-  res.json({
-    buy_price: bestPriceToBuy,
-    sell_price: bestPriceToSell,
-    buy_date: buyDate, sell_date: sellDate,
-    stocks_bought: stocksBought,
-    profit: profit
-  });
+  if (bestPriceToBuy !== null && bestPriceToSell !== null && buyDate !== null && sellDate !== null) {
+    res.json({
+      buy_time: buyDate.toISOString(),
+      sell_time: sellDate.toISOString(),
+      buy_price: bestPriceToBuy,
+      sell_price: bestPriceToSell,
+      stocks_bought: stocksBought,
+      profit: profit
+    });
+  } else {
+    res.json({ error: "No profitable time range found." });
+  }
 }
 
 function getStockData(req, res) {
