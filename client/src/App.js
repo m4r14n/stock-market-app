@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import StockResults from './components/StockResults';
+import { Paper, Typography } from '@mui/material';
 import { getStockRecommendation } from './services/stockService';
 import useStockForm from './hooks/useStockForm';
 import RecommendationForm from './components/RecommendationForm';
-import { Typography } from '@mui/material';
+import StockResults from './components/StockResults';
+import ChartStocks from './components/Chart';
+import useStockService from './hooks/useStockService';
 
 function App() {
   const [result, setResult] = useState(null);
 
   const recomentationForm = useStockForm();
+  const {stockData} = useStockService();
 
-  // Use the form onSubmit to call the getStockRecommendation function
+  // Use the form handleSubmit to call the getStockRecommendation function
+
   const handleSubmit = async ({ startTime, endTime, maxFunds }) => {
     try {
       const recommendation = await getStockRecommendation(startTime, endTime, maxFunds);
@@ -28,8 +32,11 @@ function App() {
         <Typography variant="h4" component="h1" gutterBottom>
           Stock Recommendation
         </Typography>
-        <RecommendationForm form={recomentationForm} onSubmit={handleSubmit}  />
+        <Box component={Paper}>
+          <RecommendationForm form={recomentationForm} onSubmit={handleSubmit} />
+        </Box>
         <StockResults result={result} />
+        <ChartStocks data={stockData}/>
       </Box>
     </Container>
   );

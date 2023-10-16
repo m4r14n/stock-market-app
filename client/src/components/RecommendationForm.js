@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import CustomDateTimePicker from './fields/CustomDateTimePicker';
 import InputField from './fields/InputField';
+import { InputAdornment } from '@mui/material';
 
 
 export default function RecommendationForm({
@@ -24,11 +25,15 @@ export default function RecommendationForm({
       <Grid item xs={12}>
         <InputField
           name="maxFunds"
-          label='Max Funds (USD)'
+          label='Available Funds'
           control={form?.control}
           size={'small'}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"> $
+            </InputAdornment>,
+          }}
           rules={{ required: 'Max Funds is required' }}
-          type={'number'} />
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <CustomDateTimePicker

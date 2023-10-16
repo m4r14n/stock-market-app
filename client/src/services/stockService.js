@@ -16,3 +16,12 @@ export const getStockRecommendation = async (startTime, endTime, maxFunds) => {
     throw error;
   }
 };
+
+export const getStockData = async () => {
+  try {
+    const response = await axiosInstance.get('/stock-data');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
