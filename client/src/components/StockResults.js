@@ -1,21 +1,33 @@
 import React from 'react';
+import { Paper, Typography, Grid } from '@mui/material';
 
-const StockResults = ({ result }) => {
-  if (!result) return null;
-
-  const { buy_price, sell_price, buy_time, sell_time, stocks_bought, profit } = result;
-  
+export default function StockResults({ result }) {
   return (
-    <div>
-      <h2>Recommendation Results</h2>
-      <p>Buy Price: ${buy_price}</p>
-      <p>Sell Price: ${sell_price}</p>
-      <p>Buy Date: {buy_time}</p>
-      <p>Sell Date: {sell_time}</p>
-      <p>Stocks Bought: {stocks_bought}</p>
-      <p>Profit: ${profit}</p>
-    </div>
+    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+      <Typography variant="h6" gutterBottom>
+        Recommendation Results
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Typography>Buy Price: ${result?.buy_price}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography>Sell Price: ${result?.sell_price}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography>Buy Date: {result?.buy_time}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography>Sell Date: {result?.sell_time}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography>Stocks Bought: {result?.stocks_bought}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography>Profit: ${result?.profit}</Typography>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 
-export default StockResults;

@@ -20,7 +20,7 @@ export const getStockRecommendation = async (startTime, endTime, maxFunds) => {
 export const getStockData = async () => {
   try {
     const response = await axiosInstance.get('/stock-data');
-    return response.data;
+    return response;
   } catch (error) {
     throw error;
   }
