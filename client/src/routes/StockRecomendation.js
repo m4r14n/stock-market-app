@@ -12,6 +12,7 @@ export default function StockRecommendation() {
   const [result, setResult] = React.useState(null);
   const recomentationForm = useStockForm();
   const { stockData } = useStockService();
+  
 
   const handleSubmit = async ({ startTime, endTime, maxFunds }) => {
     try {

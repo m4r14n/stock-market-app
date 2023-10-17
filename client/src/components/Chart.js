@@ -12,7 +12,7 @@ export default function Chart({
       <Typography variant="h6" sx={{ pl: 2 }} >
         Stock Chart
       </Typography>
-      <Box sx={{ height: 330, pr: 3, pt: 1 }}>
+      <Box sx={{ height: 300, pr: 3, pt: 1 }}>
         <ResponsiveContainer>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
