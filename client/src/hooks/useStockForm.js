@@ -7,23 +7,9 @@ export default function useStockForm() {
 
   const [result, setResult] = useState(null);
 
-  const validateTimeRange = (startTime, endTime) => {
-    if (startTime >= endTime) {
-      return false;
-    }
-    return true;
-  };
-
   const onSubmit = async (data) => {
     try {
       const { startTime, endTime, maxFunds } = data;
-      if (!validateTimeRange(startTime, endTime)) {
-        setError("startTime", {
-          type: "manual",
-          message: "Start time must be less than end time",
-        });
-        return;
-      }
       const recommendation = await getStockRecommendation(startTime, endTime, maxFunds);
       setResult(recommendation);
     } catch (error) {
@@ -33,9 +19,9 @@ export default function useStockForm() {
 
   return {
     control,
-    watch, 
+    watch,
     formState,
-    errors, 
+    errors,
     setError,
     onSubmit: handleSubmit(onSubmit),
     result

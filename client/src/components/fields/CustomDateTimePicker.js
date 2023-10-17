@@ -39,7 +39,6 @@ export default function CustomDateTimePicker({
   defaultValue = null,
   label,
   helperText,
-  error,
   disabled,
   isSubmitting,
   size,
@@ -55,7 +54,7 @@ export default function CustomDateTimePicker({
       rules={rules}
       control={control}
       defaultValue={defaultValue}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <FormControl
           error={!!error}
           disabled={disabled || isSubmitting}
