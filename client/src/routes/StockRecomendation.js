@@ -31,7 +31,7 @@ export default function StockRecommendation() {
       <Typography variant="body" gutterBottom>
         This is a simple stock market recommendation system. It will recommend the best time to buy and sell stocks.
       </Typography>
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="space-evenly">
         <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
           <RecommendationForm form={recomentationForm} onSubmit={handleSubmit} />
         </Paper>

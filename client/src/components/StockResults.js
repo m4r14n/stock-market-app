@@ -15,10 +15,10 @@ export default function StockResults({ result }) {
           <Typography>Sell Price: ${result?.sell_price}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography>Buy Date: {result?.buy_time}</Typography>
+          <Typography>Buy Time: {result?.buy_time}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography>Sell Date: {result?.sell_time}</Typography>
+          <Typography>Sell Time: {result?.sell_time}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography>Stocks Bought: {result?.stocks_bought}</Typography>

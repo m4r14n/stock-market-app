@@ -20,7 +20,7 @@ export default function RecommendationForm({
       onSubmit={onSubmit}
       container
       spacing={2}
-      sx={{ px: 4, py: 2 }}
+      sx={{ px: 1, py: 2 }}
     >
       <Grid item xs={12}>
         <InputField
