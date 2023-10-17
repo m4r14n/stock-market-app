@@ -39,12 +39,12 @@ export default function RecommendationForm({
         <CustomDateTimePicker
           name="startTime"
           fullWidth
+          control={control}
           InputProps={{
             fullWidth: true,
           }}
           label={'Start Time'}
           rules={{ required: 'Start Time is required' }}
-          control={control}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -54,12 +54,20 @@ export default function RecommendationForm({
           InputProps={{
             fullWidth: true,
           }}
+          control={control}
           name="endTime"
-          rules={{ required: 'End Time is required' }}
-          control={control} />
+          rules={{ 
+            required: 'End Time is required',
+            validate: (value, { startTime }) => {
+              if (value && startTime) {
+                return new Date(value) > new Date(startTime) || 'End Time must be after Start Time';
+              }
+            }
+          }}
+           />
       </Grid>
       <Grid item xs={12}>
-        <Button type="submit" variant="contained" color="primary" size='large'>
+        <Button type="submit" variant="contained" form="recommendation-form" color="primary" size='large'>
           Recommend
         </Button>
       </Grid>

@@ -43,6 +43,7 @@ export default function CustomDateTimePicker({
   disabled,
   isSubmitting,
   size,
+  rules = {},
   InputProps = {},
   InputLabelProps = {},
   ...rest
@@ -51,6 +52,7 @@ export default function CustomDateTimePicker({
   return (
     <Controller
       name={name}
+      rules={rules}
       control={control}
       defaultValue={defaultValue}
       render={({ field }) => (
