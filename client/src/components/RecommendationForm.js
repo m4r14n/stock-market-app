@@ -31,7 +31,13 @@ export default function RecommendationForm({
             startAdornment: <InputAdornment position="start"> $
             </InputAdornment>,
           }}
-          rules={{ required: 'Required field' }}
+          rules={{ 
+            required: 'Required field',
+            pattern: {
+              value: /^[0-9]+(\.[0-9]{1,2})?$/,
+              message: 'Invalid input. Please enter a number with up to 2 decimal places.'
+            }
+          }}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
