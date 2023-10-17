@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 
 const CustomTimeInput = ({ date, onChangeCustom }) => {
   const handleChange = (event) => {
@@ -16,13 +16,16 @@ const CustomTimeInput = ({ date, onChangeCustom }) => {
   const value =
     date instanceof Date && !isNaN(date)
       ? // Getting time from Date beacuse `value` comes here without seconds
-      date.toLocaleTimeString("it-IT")
+      date.toLocaleTimeString('it-IT') // HH:mm:ss
       : "00:00:00";
 
   return (
-    <input
+    <TextField
+      size='small'
       type="time"
-      step="1"
+      inputProps={{
+        step: 1, // Set the step value to 1 second
+      }}
       value={value}
       onChange={handleChange}
     />
@@ -40,16 +43,10 @@ export default function CustomDateTimePicker({
   disabled,
   isSubmitting,
   size,
+  InputProps = {},
   InputLabelProps = {},
+  ...rest
 }) {
-
-  const handleChangeTime = (date, time) => {
-    const [hh, mm, ss] = time.split(":");
-    const targetDate = date instanceof Date && !isNaN(date) ? date : new Date();
-    targetDate.setHours(Number(hh) || 0, Number(mm) || 0, Number(ss) || 0);
-
-    // Now `targetDate` contains the selected date and time
-  };
 
   return (
     <Controller
@@ -61,17 +58,17 @@ export default function CustomDateTimePicker({
           error={!!error}
           disabled={disabled || isSubmitting}
           size={size}
+          {...rest}
         >
           {label && <InputLabel {...InputLabelProps}>{label}</InputLabel>}
           <DatePicker
             selected={field.value}
             onChange={(date) => field.onChange(date)}
-            timeInputLabel="Time:"
-            dateFormat="MM/dd/yyyy h:mm:ss aa"
+            timeInputLabel={<Typography variant="body2">Time:</Typography>}
+            dateFormat="MM/dd/yyyy h:mm:ss"
             showTimeInput
             customTimeInput={<CustomTimeInput date={field.value} onChangeCustom={field.onChange} />}
-            customInput={<OutlinedInput label={label} />}
-            // onChangeRaw={(e) => handleChangeTime(field.value, e.target.value)}
+            customInput={<OutlinedInput  {...InputProps} label={label} />}
           />
           {helperText && <FormHelperText>{helperText}</FormHelperText>}
           {error && <FormHelperText error={!!error}>{error.message}</FormHelperText>}

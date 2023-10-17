@@ -20,24 +20,28 @@ export default function RecommendationForm({
       onSubmit={onSubmit}
       container
       spacing={2}
-      sx={{ px: 4, py: 2, mt:2 }}
+      sx={{ px: 4, py: 2 }}
     >
       <Grid item xs={12}>
         <InputField
           name="maxFunds"
+          fullWidth
           label='Available Funds'
           control={form?.control}
           InputProps={{
             startAdornment: <InputAdornment position="start"> $
             </InputAdornment>,
           }}
-          sx={{ maxWidth: 212 }}
           rules={{ required: 'Max Funds is required' }}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
           name="startTime"
+          fullWidth
+          InputProps={{
+            fullWidth: true,
+          }}
           label={'Start Time'}
           rules={{ required: 'Start Time is required' }}
           control={form?.control}
@@ -46,6 +50,10 @@ export default function RecommendationForm({
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
           label={'End Time'}
+          fullWidth
+          InputProps={{
+            fullWidth: true,
+          }}
           name="endTime"
           rules={{ required: 'End Time is required' }}
           control={form?.control} />

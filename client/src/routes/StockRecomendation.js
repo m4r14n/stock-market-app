@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container,  Paper, Typography } from '@mui/material';
+import { Paper, Container, Stack, Typography } from '@mui/material';
 import RecommendationForm from '../components/RecommendationForm';
 import StockResults from '../components/StockResults';
 import ChartStocks from '../components/Chart';
@@ -12,7 +12,7 @@ export default function StockRecommendation() {
   const [result, setResult] = React.useState(null);
   const recomentationForm = useStockForm();
   const { stockData } = useStockService();
-  
+
 
   const handleSubmit = async ({ startTime, endTime, maxFunds }) => {
     try {
@@ -24,20 +24,20 @@ export default function StockRecommendation() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h2" gutterBottom>
-          Stock Market
-        </Typography>
-        <Typography variant="body" gutterBottom>
-          This is a simple stock market recommendation system. It will recommend the best time to buy and sell stocks.
-        </Typography>
-        <Box component={Paper}>
+    <Container maxWidth="lg" sx={{ p: 2 }}>
+      <Typography variant="h2" gutterBottom>
+        Stock Market
+      </Typography>
+      <Typography variant="body" gutterBottom>
+        This is a simple stock market recommendation system. It will recommend the best time to buy and sell stocks.
+      </Typography>
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+        <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
           <RecommendationForm form={recomentationForm} onSubmit={handleSubmit} />
-        </Box>
+        </Paper>
         <StockResults result={result} />
-        <ChartStocks data={stockData}/>
-      </Box>
+      </Stack>
+      <ChartStocks data={stockData} />
     </Container>
   );
 };

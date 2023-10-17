@@ -5,7 +5,7 @@ import StockRecommendation from './routes/StockRecomendation';
 function App() {
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <StockRecommendation />
     </Container>
   );

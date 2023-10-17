@@ -7,7 +7,7 @@ export default function StockResults({ result }) {
       <Typography variant="h6" gutterBottom>
         Recommendation Results
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ pt: 2 }}>
         <Grid item xs={6}>
           <Typography>Buy Price: ${result?.buy_price}</Typography>
         </Grid>
