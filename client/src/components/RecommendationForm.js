@@ -7,7 +7,7 @@ import { InputAdornment } from '@mui/material';
 
 
 export default function RecommendationForm({
-  form,
+  control,
   onSubmit
 }) {
 
@@ -27,7 +27,7 @@ export default function RecommendationForm({
           name="maxFunds"
           fullWidth
           label='Available Funds'
-          control={form?.control}
+          control={control}
           InputProps={{
             startAdornment: <InputAdornment position="start"> $
             </InputAdornment>,
@@ -44,7 +44,7 @@ export default function RecommendationForm({
           }}
           label={'Start Time'}
           rules={{ required: 'Start Time is required' }}
-          control={form?.control}
+          control={control}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -56,7 +56,7 @@ export default function RecommendationForm({
           }}
           name="endTime"
           rules={{ required: 'End Time is required' }}
-          control={form?.control} />
+          control={control} />
       </Grid>
       <Grid item xs={12}>
         <Button type="submit" variant="contained" color="primary" size='large'>

@@ -1,9 +1,9 @@
 const generateStockData = require("./data/stockData");
 
-// Generate stock data for the next 2 mins
-const today = new Date();
-const stockData = generateStockData(today.toISOString(), new Date(today.setMinutes(today.getMinutes() + 2)).toISOString());
-
+// Generate stock data for the previous 2 mins
+const now = new Date();
+const twoMinutesAgo = new Date(now.getTime() - (2 * 60 * 1000)); // Resta 2 minutos a la fecha actual
+const stockData = generateStockData(twoMinutesAgo, now);
 
 const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) => {
   let minPrice = Infinity;
@@ -14,31 +14,31 @@ const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) =
   let sellDate = null;
   let stocksBought = 0;
   let profit = 0;
-  
 
   for (let i = 0; i < data.length; i++) {
     const currentTimestamp = new Date(data[i].timestamp);
     const currentPrice = data[i].price;
 
-    if (currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp) {
-      if (currentPrice < minPrice && currentPrice <= maxFunds) {
+    if (currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp && currentPrice <= maxFunds) {
+      if (currentPrice < minPrice) {
         minPrice = currentPrice;
         bestPriceToBuy = currentPrice;
         buyDate = new Date(data[i].timestamp);
-      } else if (currentPrice - minPrice > maxProfit && currentPrice <= maxFunds) {
+        maxProfit = 0; // Reset maxProfit when finding a new buy opportunity
+      } else if (currentPrice - minPrice > maxProfit) {
         maxProfit = currentPrice - minPrice;
         bestPriceToBuy = minPrice;
         bestPriceToSell = currentPrice;
-        buyDate = new Date(data[i - 1].timestamp);
         sellDate = new Date(data[i].timestamp);
-        stocksBought = maxFunds / minPrice;
-        profit = maxProfit * stocksBought;
+        stocksBought = Math.floor(maxFunds / minPrice);
+        profit = (maxProfit * stocksBought).toFixed(2);
       }
     }
   }
 
   return { bestPriceToBuy, bestPriceToSell, buyDate, sellDate, stocksBought, profit };
 };
+
 
 function getStockRecommendation(req, res) {
   const startTime = new Date(req.query.start_time) || '';
@@ -56,8 +56,8 @@ function getStockRecommendation(req, res) {
 
   if (bestPriceToBuy !== null && bestPriceToSell !== null && buyDate !== null && sellDate !== null) {
     res.json({
-      buy_time: buyDate.toISOString(),
-      sell_time: sellDate.toISOString(),
+      buy_time: buyDate.toLocaleString('it-IT'),
+      sell_time: sellDate.toLocaleString('it-IT'),
       buy_price: bestPriceToBuy,
       sell_price: bestPriceToSell,
       stocks_bought: stocksBought,

@@ -1,11 +1,21 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form"
+import { getStockRecommendation } from "../services/stockService";
 
 export default function useStockForm() {
   const { control, formState, watch, handleSubmit, errors, setError } = useForm()
 
-  const onSubmit = (data) => {
-    console.log(data)
-  }
+  const [result, setResult] = useState(null);
+
+  const onSubmit = async (data) => {
+    try {
+      const { startTime, endTime, maxFunds } = data;
+      const recommendation = await getStockRecommendation(startTime, endTime, maxFunds);
+      setResult(recommendation);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return {
     control,
@@ -13,6 +23,7 @@ export default function useStockForm() {
     formState,
     errors, 
     setError,
-    handleSubmit,
+    onSubmit: handleSubmit(onSubmit),
+    result
   }
 }

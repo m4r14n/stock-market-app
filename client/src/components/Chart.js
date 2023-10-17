@@ -7,6 +7,16 @@ import { Box, Paper, Typography } from '@mui/material';
 export default function Chart({
   data = []
 }) {
+
+  // cast timestamp to local date
+  data = data.map((item) => {
+    const date = new Date(item.timestamp);
+    return {
+      ...item,
+      timestamp: date.toLocaleString('it-IT'), // dd/mm/yyyy HH:mm:ss
+    };
+  });
+
   return (
     <Paper elevation={3} sx={{ mt: 4, p: 2 }}>
       <Typography variant="h6" sx={{ pl: 2 }} >
@@ -15,7 +25,7 @@ export default function Chart({
       <Box sx={{ height: 300, pr: 3, pt: 1 }}>
         <ResponsiveContainer>
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid  />
             <XAxis dataKey="timestamp" />
             <YAxis />
             <Tooltip />

@@ -65,7 +65,7 @@ export default function CustomDateTimePicker({
             selected={field.value}
             onChange={(date) => field.onChange(date)}
             timeInputLabel={<Typography variant="body2">Time:</Typography>}
-            dateFormat="MM/dd/yyyy h:mm:ss"
+            dateFormat="dd/MM/yyyy h:mm:ss"
             showTimeInput
             customTimeInput={<CustomTimeInput date={field.value} onChangeCustom={field.onChange} />}
             customInput={<OutlinedInput  {...InputProps} label={label} />}
