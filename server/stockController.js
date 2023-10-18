@@ -1,9 +1,16 @@
-const generateStockData = require("./data/stockData");
+const fs = require('fs');
+// Define the file path
+const filePath = 'server/data/stockData.json';
+// Read the file
+let stockData;
+try {
+  const data = fs.readFileSync(filePath, 'utf8');
+  stockData = JSON.parse(data);
+  console.log('JSON data:', stockData);
+} catch (error) {
+  console.error('Error reading or parsing JSON:', error);
+}
 
-// Generate stock data for the previous 2 mins
-const now = new Date();
-const twoMinutesAgo = new Date(now.getTime() - (2 * 60 * 1000)); // Resta 2 minutos a la fecha actual
-const stockData = generateStockData(twoMinutesAgo, now);
 
 const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) => {
   let minPrice = Infinity;

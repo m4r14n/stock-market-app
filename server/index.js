@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 
+// Initialize the stock data
+require('./initScript');
+
 const app = express();
 
 app.use(cors());

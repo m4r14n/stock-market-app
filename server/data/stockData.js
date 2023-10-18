@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const generateStockData = (from, to) => {
   const startTimestamp = new Date(from).getTime();
   const endTimestamp = new Date(to).getTime();
@@ -10,7 +12,12 @@ const generateStockData = (from, to) => {
     stockData.push({ timestamp: new Date(timestamp).toISOString(), price: parseFloat(price.toFixed(2)) });
   }
 
-  return stockData;
+  // Store the result in a json file and overwrites the file if it already exists
+  const jsonStockData = JSON.stringify(stockData);
+  // set the path and filename
+  const filePath = 'server/data/stockData.json';
+
+  fs.writeFileSync(filePath, jsonStockData);
 };
 
-module.exports = generateStockData;
+module.exports = { generateStockData };

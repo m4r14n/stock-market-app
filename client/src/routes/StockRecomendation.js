@@ -8,7 +8,7 @@ import useStockService from '../hooks/useStockService';
 
 
 export default function StockRecommendation() {
-  const {result, ...form} = useStockForm();
+  const {result, onSubmit, ...form} = useStockForm();
   const { stockData } = useStockService();
 
   return (
@@ -21,7 +21,7 @@ export default function StockRecommendation() {
       </Typography>
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="space-evenly">
         <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
-          <RecommendationForm form={form} />
+          <RecommendationForm form={form} onSubmit={onSubmit} />
         </Paper>
         <StockResults result={result} />
       </Stack>
