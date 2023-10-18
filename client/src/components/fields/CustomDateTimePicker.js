@@ -4,13 +4,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FormControl, FormHelperText, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 
-const CustomTimeInput = ({ date, onChangeCustom }) => {
+const CustomTimeInput = ({ date, onChange }) => {
   const handleChange = (event) => {
     const time = event.target.value;
-    const [H, mm, ss] = time.split(":");
-    const updatedDate = new Date(date);
-    updatedDate.setHours(Number(H) || 0, Number(mm) || 0, Number(ss) || 0);
-    onChangeCustom(updatedDate);
+    onChange(time);
   };
 
   const value =
@@ -69,7 +66,7 @@ export default function CustomDateTimePicker({
             timeInputLabel={<Typography variant="body2">Time:</Typography>}
             dateFormat="dd/MM/yyyy H:mm:ss"
             showTimeInput
-            customTimeInput={<CustomTimeInput date={field.value} onChangeCustom={field.onChange} />}
+            customTimeInput={<CustomTimeInput />}
             customInput={<OutlinedInput  {...InputProps} label={label} />}
             {...DateTimePickerProps}
           />

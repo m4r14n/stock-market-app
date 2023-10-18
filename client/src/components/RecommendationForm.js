@@ -52,7 +52,7 @@ export default function RecommendationForm({
             fullWidth: true,
           }}
           DateTimePickerProps={{
-            maxDate: today,
+            maxDate: today
           }}
           rules={{ required: 'Required field' }}
         />
