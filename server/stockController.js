@@ -22,25 +22,29 @@ const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) =
   let stocksBought = 0;
   let profit = 0;
 
-  for (let i = 0; i < data.length; i++) {
-    const currentTimestamp = new Date(data[i].timestamp);
-    const currentPrice = data[i].price;
+  data.forEach(item => {
+    const { timestamp, price } = item;
+    const currentTimestamp = new Date(timestamp);
 
-    if (currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp && currentPrice <= maxFunds) {
-      if (currentPrice < minPrice) {
-        minPrice = currentPrice;
-        bestPriceToBuy = currentPrice;
-        buyDate = new Date(data[i].timestamp);
+    if (currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp) {
+      if (price < minPrice) {
+        minPrice = price;
+        bestPriceToBuy = price;
+        buyDate = new Date(timestamp);
         maxProfit = 0; // Reset maxProfit when finding a new buy opportunity
-      } else if (currentPrice - minPrice > maxProfit) {
-        maxProfit = currentPrice - minPrice;
+      } else if (price - minPrice > maxProfit) {
+        maxProfit = price - minPrice;
         bestPriceToBuy = minPrice;
-        bestPriceToSell = currentPrice;
-        sellDate = new Date(data[i].timestamp);
+        bestPriceToSell = price;
+        sellDate = new Date(timestamp);
         stocksBought = Math.floor(maxFunds / minPrice);
         profit = (maxProfit * stocksBought).toFixed(2);
       }
     }
+  });
+
+  if (bestPriceToBuy > maxFunds) {
+    throw new Error('Insufficient funds');
   }
 
   return { bestPriceToBuy, bestPriceToSell, buyDate, sellDate, stocksBought, profit };
@@ -48,32 +52,44 @@ const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) =
 
 
 function getStockRecommendation(req, res) {
-  const startTime = new Date(req.query.start_time) || '';
-  const endTime = new Date(req.query.end_time) || '';
-  const maxFunds = req.query.max_funds || '';
+  try {
+    const startTime = new Date(req.query.start_time) || '';
+    const endTime = new Date(req.query.end_time) || '';
+    const maxFunds = req.query.max_funds || '';
 
-  const {
-    bestPriceToBuy,
-    bestPriceToSell,
-    buyDate,
-    sellDate,
-    stocksBought,
-    profit
-  } = findMostProfitableTimes(stockData, startTime, endTime, maxFunds);
+    let recommendation;
+    try {
+      recommendation = findMostProfitableTimes(stockData, startTime, endTime, maxFunds);
+    } catch (error) {
+      return res.status(400).json({ error: error.message }); // Use status 400 for bad request
+    }
 
-  if (bestPriceToBuy !== null && bestPriceToSell !== null && buyDate !== null && sellDate !== null) {
-    res.json({
-      buy_time: buyDate.toLocaleString('it-IT'),
-      sell_time: sellDate.toLocaleString('it-IT'),
-      buy_price: bestPriceToBuy,
-      sell_price: bestPriceToSell,
-      stocks_bought: stocksBought,
-      profit: profit
-    });
-  } else {
-    res.json({ error: "No profitable time range found." });
+    const {
+      bestPriceToBuy,
+      bestPriceToSell,
+      buyDate,
+      sellDate,
+      stocksBought,
+      profit
+    } = recommendation;
+
+    if (bestPriceToBuy !== null && bestPriceToSell !== null && buyDate !== null && sellDate !== null) {
+      res.status(200).json({
+        buy_time: buyDate.toLocaleString('it-IT'),
+        sell_time: sellDate.toLocaleString('it-IT'),
+        buy_price: bestPriceToBuy,
+        sell_price: bestPriceToSell,
+        stocks_bought: stocksBought,
+        profit: profit
+      });
+    } else {
+      res.status(404).json({ error: "No profitable time range found." }); // Use status 404 for not found
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }
+
 
 function getStockData(req, res) {
   res.json(stockData);
