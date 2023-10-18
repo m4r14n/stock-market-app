@@ -10,6 +10,7 @@ export default function RecommendationForm({
   form,
   onSubmit,
 }) {
+  const today = new Date();
 
   return (
     <Grid
@@ -32,7 +33,7 @@ export default function RecommendationForm({
             startAdornment: <InputAdornment position="start"> $
             </InputAdornment>,
           }}
-          rules={{ 
+          rules={{
             required: 'Required field',
             pattern: {
               value: /^[0-9]+(\.[0-9]{1,2})?$/,
@@ -44,12 +45,15 @@ export default function RecommendationForm({
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
           name="startTime"
+          label={'Start Time'}
           fullWidth
           control={form?.control}
           InputProps={{
             fullWidth: true,
           }}
-          label={'Start Time'}
+          DateTimePickerProps={{
+            maxDate: today,
+          }}
           rules={{ required: 'Required field' }}
         />
       </Grid>
@@ -62,7 +66,10 @@ export default function RecommendationForm({
           }}
           control={form?.control}
           name="endTime"
-          rules={{ 
+          DateTimePickerProps={{
+            maxDate: today,
+          }}
+          rules={{
             required: 'Required field',
             validate: (value, { startTime }) => {
               if (value && startTime) {
@@ -70,7 +77,7 @@ export default function RecommendationForm({
               }
             }
           }}
-           />
+        />
       </Grid>
       <Grid item xs={12}>
         <Button type="submit" variant="contained" form="recommendation-form" color="primary" size='large'>

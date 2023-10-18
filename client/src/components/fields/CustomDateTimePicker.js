@@ -45,6 +45,7 @@ export default function CustomDateTimePicker({
   rules = {},
   InputProps = {},
   InputLabelProps = {},
+  DateTimePickerProps = {},
   ...rest
 }) {
 
@@ -70,6 +71,7 @@ export default function CustomDateTimePicker({
             showTimeInput
             customTimeInput={<CustomTimeInput date={field.value} onChangeCustom={field.onChange} />}
             customInput={<OutlinedInput  {...InputProps} label={label} />}
+            {...DateTimePickerProps}
           />
           {helperText && <FormHelperText>{helperText}</FormHelperText>}
           {error && <FormHelperText error={!!error}>{error.message}</FormHelperText>}
