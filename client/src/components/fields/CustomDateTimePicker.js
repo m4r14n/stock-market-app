@@ -7,9 +7,9 @@ import { FormControl, FormHelperText, InputLabel, OutlinedInput, TextField, Typo
 const CustomTimeInput = ({ date, onChangeCustom }) => {
   const handleChange = (event) => {
     const time = event.target.value;
-    const [hh, mm, ss] = time.split(":");
+    const [H, mm, ss] = time.split(":");
     const updatedDate = new Date(date);
-    updatedDate.setHours(Number(hh) || 0, Number(mm) || 0, Number(ss) || 0);
+    updatedDate.setHours(Number(H) || 0, Number(mm) || 0, Number(ss) || 0);
     onChangeCustom(updatedDate);
   };
 
@@ -66,7 +66,7 @@ export default function CustomDateTimePicker({
             selected={field.value}
             onChange={(date) => field.onChange(date)}
             timeInputLabel={<Typography variant="body2">Time:</Typography>}
-            dateFormat="dd/MM/yyyy h:mm:ss"
+            dateFormat="dd/MM/yyyy H:mm:ss"
             showTimeInput
             customTimeInput={<CustomTimeInput date={field.value} onChangeCustom={field.onChange} />}
             customInput={<OutlinedInput  {...InputProps} label={label} />}

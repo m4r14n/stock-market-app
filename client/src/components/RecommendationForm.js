@@ -7,7 +7,8 @@ import { InputAdornment } from '@mui/material';
 
 
 export default function RecommendationForm({
-  form
+  form,
+  onSubmit,
 }) {
 
   return (
@@ -16,7 +17,7 @@ export default function RecommendationForm({
       id='recommendation-form'
       noValidate
       autoComplete='off'
-      onSubmit={form?.onSubmit}
+      onSubmit={onSubmit}
       container
       spacing={2}
       sx={{ px: 1, py: 2 }}
