@@ -1,14 +1,15 @@
 import React from 'react';
-import { Paper, Container, Stack, Typography } from '@mui/material';
+import { Paper, Container, Stack, Typography, Snackbar, Alert } from '@mui/material';
 import RecommendationForm from '../components/RecommendationForm';
 import StockResults from '../components/StockResults';
 import ChartStocks from '../components/Chart';
 import useStockForm from '../hooks/useStockForm';
 import useStockService from '../hooks/useStockService';
+import CustomSnackbar from '../components/CustomSnackbar';
 
 
 export default function StockRecommendation() {
-  const {result, onSubmit, ...form} = useStockForm();
+  const { result, onSubmit, snackbar, ...form } = useStockForm();
   const { stockData } = useStockService();
 
   return (
@@ -26,6 +27,12 @@ export default function StockRecommendation() {
         <StockResults result={result} />
       </Stack>
       <ChartStocks data={stockData} />
+      <CustomSnackbar sx={{ width: { xs: '80vw', md: '60vw', lg: '35vw' } }}
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        autoHideDuration={4000}
+        handleClose={snackbar.handleClose} />
     </Container>
   );
 };

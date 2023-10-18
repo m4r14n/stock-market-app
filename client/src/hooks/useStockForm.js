@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { getStockRecommendation } from "../services/stockService";
+import useCustomSnackbar from "./useCustomSnackbar";
 
 export default function useStockForm() {
   const { control, formState, watch, handleSubmit, errors, setError } = useForm();
 
   const [result, setResult] = useState(null);
+
+  const snackbar = useCustomSnackbar();
 
   const onSubmit = async (data) => {
     try {
@@ -13,7 +16,8 @@ export default function useStockForm() {
       const recommendation = await getStockRecommendation(startTime, endTime, maxFunds);
       setResult(recommendation);
     } catch (error) {
-      console.error('Error:', error);
+      const message = error.response?.data?.error || error.message;
+        snackbar.handleOpen({ message, severity: 'error' });
     }
   };
 
@@ -24,6 +28,7 @@ export default function useStockForm() {
     errors,
     setError,
     onSubmit: handleSubmit(onSubmit),
-    result
+    result,
+    snackbar
   };
 }

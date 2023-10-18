@@ -45,7 +45,7 @@ export default function RecommendationForm({
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
           name="startTime"
-          label={'Start Time'}
+          label={'Start Period'}
           fullWidth
           control={form?.control}
           InputProps={{
@@ -59,7 +59,7 @@ export default function RecommendationForm({
       </Grid>
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
-          label={'End Time'}
+          label={'End Period'}
           fullWidth
           InputProps={{
             fullWidth: true,
@@ -67,7 +67,7 @@ export default function RecommendationForm({
           control={form?.control}
           name="endTime"
           DateTimePickerProps={{
-            maxDate: today,
+            maxDate: today
           }}
           rules={{
             required: 'Required field',
