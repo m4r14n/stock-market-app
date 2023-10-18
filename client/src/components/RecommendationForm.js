@@ -11,6 +11,12 @@ export default function RecommendationForm({
   onSubmit,
 }) {
   const today = new Date();
+  const hour = today.getHours();
+  const mins = today.getMinutes() + 1;
+
+  // generate an array with 5 dates, each one 1 min before the previous one
+  const injectTimes = Array.from({ length: 5 }, (_, i) => new Date(today.getFullYear(),
+    today.getMonth(), today.getDate(), hour, mins - i));
 
   return (
     <Grid
@@ -52,7 +58,8 @@ export default function RecommendationForm({
             fullWidth: true,
           }}
           DateTimePickerProps={{
-            maxDate: today
+            maxDate: today,
+            injectTimes: injectTimes
           }}
           rules={{ required: 'Required field' }}
         />
@@ -67,7 +74,8 @@ export default function RecommendationForm({
           control={form?.control}
           name="endTime"
           DateTimePickerProps={{
-            maxDate: today
+            maxDate: today,
+            injectTimes: injectTimes
           }}
           rules={{
             required: 'Required field',

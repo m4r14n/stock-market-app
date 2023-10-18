@@ -24,7 +24,7 @@ export default function StockResults({ result }) {
           <Typography>Stocks Bought: {result?.stocks_bought}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography>Profit: ${result?.profit}</Typography>
+          <Typography>Profit: ${result?.profit?.toFixed(2)}</Typography>
         </Grid>
       </Grid>
     </Paper>

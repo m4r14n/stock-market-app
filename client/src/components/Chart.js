@@ -9,7 +9,7 @@ export default function Chart({
 }) {
 
   // cast timestamp to local date
-  data = data.map((item) => {
+  data = data?.map((item) => {
     const date = new Date(item.timestamp);
     return {
       ...item,

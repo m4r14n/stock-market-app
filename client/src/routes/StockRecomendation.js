@@ -1,16 +1,16 @@
 import React from 'react';
-import { Paper, Container, Stack, Typography, Snackbar, Alert } from '@mui/material';
+import { Paper, Container, Stack, Typography } from '@mui/material';
 import RecommendationForm from '../components/RecommendationForm';
 import StockResults from '../components/StockResults';
 import ChartStocks from '../components/Chart';
-import useStockForm from '../hooks/useStockForm';
-import useStockService from '../hooks/useStockService';
+import useStockRecommendation from '../hooks/useStockRecommendation';
+import useStockData from '../hooks/useStockData';
 import CustomSnackbar from '../components/CustomSnackbar';
 
 
 export default function StockRecommendation() {
-  const { result, onSubmit, snackbar, ...form } = useStockForm();
-  const { stockData } = useStockService();
+  const { stockData } = useStockData();
+  const { result, onSubmit, snackbar, ...form } = useStockRecommendation();
 
   return (
     <Container maxWidth="lg" sx={{ p: 2 }}>

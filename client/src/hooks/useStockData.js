@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getStockData } from '../services/stockService';
 
-export default function useStockService() {
+export default function useStockData() {
   const [stockData, setStockData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

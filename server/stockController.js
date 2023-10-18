@@ -1,54 +1,11 @@
 const fs = require('fs');
+const { findMostProfitableTimes } = require('./lib/findMostProfitableTimes');
 // Define the file path
-const filePath = 'server/data/stockData.json';
-// Read the file
-let stockData;
-try {
-  const data = fs.readFileSync(filePath, 'utf8');
-  stockData = JSON.parse(data);
-  console.log('JSON data:', stockData);
-} catch (error) {
-  console.error('Error reading or parsing JSON:', error);
-}
+const FILE_PATH = 'server/data/stockData.json';
 
-
-const findMostProfitableTimes = (data, startTimestamp, endTimestamp, maxFunds) => {
-  let minPrice = Infinity;
-  let maxProfit = 0;
-  let bestPriceToBuy = null;
-  let bestPriceToSell = null;
-  let buyDate = null;
-  let sellDate = null;
-  let stocksBought = 0;
-  let profit = 0;
-
-  data.forEach(item => {
-    const { timestamp, price } = item;
-    const currentTimestamp = new Date(timestamp);
-
-    if (currentTimestamp >= startTimestamp && currentTimestamp <= endTimestamp) {
-      if (price < minPrice) {
-        minPrice = price;
-        bestPriceToBuy = price;
-        buyDate = new Date(timestamp);
-        maxProfit = 0; // Reset maxProfit when finding a new buy opportunity
-      } else if (price - minPrice > maxProfit) {
-        maxProfit = price - minPrice;
-        bestPriceToBuy = minPrice;
-        bestPriceToSell = price;
-        sellDate = new Date(timestamp);
-        stocksBought = Math.floor(maxFunds / minPrice);
-        profit = (maxProfit * stocksBought).toFixed(2);
-      }
-    }
-  });
-
-  if (bestPriceToBuy > maxFunds) {
-    throw new Error('Insufficient funds');
-  }
-
-  return { bestPriceToBuy, bestPriceToSell, buyDate, sellDate, stocksBought, profit };
-};
+// Read the file and parse the data
+const data = fs.readFileSync(FILE_PATH, 'utf8');
+const stockData = JSON.parse(data);
 
 
 function getStockRecommendation(req, res) {
@@ -92,7 +49,8 @@ function getStockRecommendation(req, res) {
 
 
 function getStockData(req, res) {
-  res.json(stockData);
+  res.status(200).json(stockData);
+
 }
 
 module.exports = {
