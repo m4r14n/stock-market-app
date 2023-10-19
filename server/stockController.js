@@ -2,6 +2,12 @@ const { stockData } = require('./config');
 const { findBestTrade } = require('./lib/findBestTrade');
 
 
+/**
+ * Retrieves a stock recommendation based on the given time range.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} The stock recommendation.
+ */
 function getStockRecommendation(req, res) {
   try {
     // Parse start_time and end_time as Dates
