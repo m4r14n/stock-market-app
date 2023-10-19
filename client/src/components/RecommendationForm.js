@@ -1,22 +1,15 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import CustomDateTimePicker from './fields/CustomDateTimePicker';
 import InputField from './fields/InputField';
 import { InputAdornment } from '@mui/material';
+import CustomDateTimePicker from './fields/CustomDateTimePicker';
 
 
 export default function RecommendationForm({
   form,
   onSubmit,
 }) {
-  const today = new Date();
-  const hour = today.getHours();
-  const mins = today.getMinutes() + 1;
-
-  // generate an array with 5 dates, each one 1 min before the previous one
-  const injectTimes = Array.from({ length: 5 }, (_, i) => new Date(today.getFullYear(),
-    today.getMonth(), today.getDate(), hour, mins - i));
 
   return (
     <Grid
@@ -51,37 +44,29 @@ export default function RecommendationForm({
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
           name="startTime"
-          label={'Start Period'}
+          label={'Start Time'}
           fullWidth
           control={form?.control}
           InputProps={{
             fullWidth: true,
-          }}
-          DateTimePickerProps={{
-            maxDate: today,
-            injectTimes: injectTimes
           }}
           rules={{ required: 'Required field' }}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <CustomDateTimePicker
-          label={'End Period'}
+          name="endTime"
+          label={'End Time'}
           fullWidth
+          control={form?.control}
           InputProps={{
             fullWidth: true,
-          }}
-          control={form?.control}
-          name="endTime"
-          DateTimePickerProps={{
-            maxDate: today,
-            injectTimes: injectTimes
           }}
           rules={{
             required: 'Required field',
             validate: (value, { startTime }) => {
               if (value && startTime) {
-                return new Date(value) > new Date(startTime) || 'End Time must be after Start Time';
+                return new Date(value) > new Date(startTime) || "The End Time must be greater than the Start Time.";
               }
             }
           }}

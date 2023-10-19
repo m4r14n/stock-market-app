@@ -1,9 +1,10 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "../../styles.css";
-import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { FormControl, FormHelperText } from '@mui/material';
 
 
 export default function CustomDateTimePicker({
@@ -35,17 +36,18 @@ export default function CustomDateTimePicker({
           size={size}
           {...rest}
         >
-          {label && <InputLabel {...InputLabelProps}>{label}</InputLabel>}
-          <DatePicker
-            selected={field.value}
-            popperClassName='custom-datepicker'
-            onChange={(date) => field.onChange(date)}
-            dateFormat="dd/MM/yyyy H:mm"
-            timeFormat="H:mm"
-            showTimeSelect
-            customInput={<OutlinedInput  {...InputProps} label={label} />}
-            {...DateTimePickerProps}
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              label={label}
+              value={field.value}
+              onChange={(newValue) => field.onChange(newValue)}
+              viewRenderers={{
+                hours: renderTimeViewClock,
+                minutes: renderTimeViewClock,
+                seconds: renderTimeViewClock,
+              }}
+            />
+          </LocalizationProvider>
           {helperText && <FormHelperText>{helperText}</FormHelperText>}
           {error && <FormHelperText error={!!error}>{error.message}</FormHelperText>}
         </FormControl>

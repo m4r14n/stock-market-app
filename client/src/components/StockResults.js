@@ -3,27 +3,27 @@ import { Paper, Typography, Grid } from '@mui/material';
 
 export default function StockResults({ result }) {
   return (
-    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px', width: '100%' }}>
       <Typography variant="h6" gutterBottom>
         Recommendation Results
       </Typography>
       <Grid container spacing={2} sx={{ pt: 2 }}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography>Buy Price: ${result?.buy_price}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography>Sell Price: ${result?.sell_price}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography>Buy Time: {result?.buy_time}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography>Sell Time: {result?.sell_time}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography>Stocks Bought: {result?.stocks_bought}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography>Profit: ${result?.profit?.toFixed(2)}</Typography>
         </Grid>
       </Grid>
