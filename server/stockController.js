@@ -1,56 +1,48 @@
-const fs = require('fs');
-const { findMostProfitableTimes } = require('./lib/findMostProfitableTimes');
-// Define the file path
-const FILE_PATH = 'server/data/stockData.json';
-
-// Read the file and parse the data
-const data = fs.readFileSync(FILE_PATH, 'utf8');
-const stockData = JSON.parse(data);
+const { stockData } = require('./config');
+const { findBestTrade } = require('./lib/findBestTrade');
 
 
 function getStockRecommendation(req, res) {
   try {
-    const startTime = new Date(req.query.start_time) || '';
-    const endTime = new Date(req.query.end_time) || '';
-    const maxFunds = req.query.max_funds || '';
+    // Parse start_time and end_time as Dates
+    const startTime = new Date(req.query.start_time);
+    const endTime = new Date(req.query.end_time);
 
-    let recommendation;
-    try {
-      recommendation = findMostProfitableTimes(stockData, startTime, endTime, maxFunds);
-    } catch (error) {
-      return res.status(400).json({ error: error.message }); // Use status 400 for bad request
+    // Check if either of the dates are not valid or if end time is before start time
+    if (isNaN(startTime) || isNaN(endTime) || endTime <= startTime) {
+      return res.status(400).json({ error: "Invalid time range." });
     }
 
-    const {
-      bestPriceToBuy,
-      bestPriceToSell,
-      buyDate,
-      sellDate,
-      stocksBought,
-      profit
-    } = recommendation;
+    // Call the findBestTrade function to get the recommendation
+    const recommendation = findBestTrade(stockData, startTime, endTime);
 
-    if (bestPriceToBuy !== null && bestPriceToSell !== null && buyDate !== null && sellDate !== null) {
-      res.status(200).json({
-        buy_time: buyDate.toLocaleString('it-IT'),
-        sell_time: sellDate.toLocaleString('it-IT'),
-        buy_price: bestPriceToBuy,
-        sell_price: bestPriceToSell,
-        stocks_bought: stocksBought,
-        profit: profit
+    // Check if a profitable time range is found
+    if (recommendation.bestBuy.timestamp && recommendation.bestSell.timestamp) {
+      
+      // Format timestamps for response
+      const buyTime = recommendation.bestBuy.timestamp;
+      const sellTime = recommendation.bestSell.timestamp;
+
+      // Respond with the recommendation
+      return res.status(200).json({
+        buy_time: buyTime,
+        buy_price: recommendation.bestBuy.price,
+        sell_time: sellTime,
+        sell_price: recommendation.bestSell.price,
       });
     } else {
-      res.status(404).json({ error: "No profitable time range found." }); // Use status 404 for not found
+      // Respond with an error if no profitable time range is found
+      return res.status(404).json({ error: "No profitable time range found." });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Handle any unexpected errors and respond with a 500 status code
+    return res.status(500).json({ error: error.message });
   }
 }
 
 
 function getStockData(req, res) {
   res.status(200).json(stockData);
-
 }
 
 module.exports = {

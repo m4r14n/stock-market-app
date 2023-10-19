@@ -1,4 +1,4 @@
-const { findBestTrade } = require("../lib/findBestTrade");
+const { findBestTrade } = require("./findBestTrade");
 
 test('returns null when there are no profitable trades', () => {
   const data = [
