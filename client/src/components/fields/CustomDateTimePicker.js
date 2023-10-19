@@ -17,9 +17,6 @@ export default function CustomDateTimePicker({
   isSubmitting,
   size,
   rules = {},
-  InputProps = {},
-  InputLabelProps = {},
-  DateTimePickerProps = {},
   ...rest
 }) {
 
@@ -39,6 +36,7 @@ export default function CustomDateTimePicker({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
               label={label}
+              format="DD/MM/YYYY H:mm:ss"
               value={field.value}
               onChange={(newValue) => field.onChange(newValue)}
               viewRenderers={{

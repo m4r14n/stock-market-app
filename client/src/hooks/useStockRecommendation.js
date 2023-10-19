@@ -14,11 +14,13 @@ export default function useStockRecommendation() {
     try {
       const { startTime, endTime, maxFunds } = data;
       const recommendation = await getStockRecommendation(startTime, endTime);
-
+      if (recommendation.buy_price > maxFunds) {
+        throw new Error('Not enough funds to buy stocks');
+      }
       // Calculate the number of stocks that can be bought with maxFunds
       const stocksBought = Math.floor(maxFunds / recommendation.buy_price);
       // Calculate the profit
-      const profit = stocksBought * recommendation.sell_price - maxFunds;
+      const profit = (recommendation.sell_price - recommendation.buy_price) * stocksBought ;
 
       const result = {
         ...recommendation,

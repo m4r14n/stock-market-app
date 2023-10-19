@@ -11,6 +11,19 @@ export default function RecommendationForm({
   onSubmit,
 }) {
 
+  const { control, watch } = form;
+  const startTime = watch('startTime');
+
+  const validateEndTime = (value) => {
+    const startDateTime = new Date(startTime);
+    const endDateTime = new Date(value);
+
+    if (endDateTime <= startDateTime) {
+      return "End Time must be greater than Start Time.";
+    }  
+    return true; // Validation passed
+  }
+
   return (
     <Grid
       component='form'
@@ -27,7 +40,7 @@ export default function RecommendationForm({
           name="maxFunds"
           fullWidth
           label='Available Funds'
-          control={form?.control}
+          control={control}
           InputProps={{
             startAdornment: <InputAdornment position="start"> $
             </InputAdornment>,
@@ -46,10 +59,7 @@ export default function RecommendationForm({
           name="startTime"
           label={'Start Time'}
           fullWidth
-          control={form?.control}
-          InputProps={{
-            fullWidth: true,
-          }}
+          control={control}
           rules={{ required: 'Required field' }}
         />
       </Grid>
@@ -58,17 +68,10 @@ export default function RecommendationForm({
           name="endTime"
           label={'End Time'}
           fullWidth
-          control={form?.control}
-          InputProps={{
-            fullWidth: true,
-          }}
+          control={control}
           rules={{
             required: 'Required field',
-            validate: (value, { startTime }) => {
-              if (value && startTime) {
-                return new Date(value) > new Date(startTime) || "The End Time must be greater than the Start Time.";
-              }
-            }
+            validate: validateEndTime
           }}
         />
       </Grid>

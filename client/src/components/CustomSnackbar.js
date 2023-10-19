@@ -13,6 +13,7 @@ export default function CustomSnackbar({
   return (
     <Snackbar
       open={open}
+      data-testid="snackbar"
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       autoHideDuration={autoHideDuration}
       onClose={handleClose}>

@@ -17,7 +17,7 @@ function getStockRecommendation(req, res) {
     const recommendation = findBestTrade(stockData, startTime, endTime);
 
     // Check if a profitable time range is found
-    if (recommendation.bestBuy.timestamp && recommendation.bestSell.timestamp) {
+    if (recommendation.bestBuy?.timestamp && recommendation.bestSell?.timestamp) {
       
       // Format timestamps for response
       const buyTime = recommendation.bestBuy.timestamp;
