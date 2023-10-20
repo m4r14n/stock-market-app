@@ -15,7 +15,7 @@ const generateStockData = (from, to) => {
   // Store the result in a json file and overwrites the file if it already exists
   const jsonStockData = JSON.stringify(stockData);
   // set the path and filename
-  const filePath = 'server/data/stockData.json';
+  const filePath = './data/stockData.json';
 
   fs.writeFileSync(filePath, jsonStockData);
 };

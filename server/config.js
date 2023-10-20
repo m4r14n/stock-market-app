@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const FILE_PATH = 'server/data/stockData.json';
+const FILE_PATH = './data/stockData.json';
 let stockData;
 
 try {
