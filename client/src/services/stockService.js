@@ -6,10 +6,10 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
 });
 
-export const getStockRecommendation = async (startTime, endTime, maxFunds) => {
+export const getStockRecommendation = async (startTime, endTime) => {
   try {
     const response = await axiosInstance.get('/stock-recommendation', {
-      params: { start_time: startTime, end_time: endTime, max_funds: maxFunds },
+      params: { start_time: startTime, end_time: endTime },
     });
     return response.data;
   } catch (error) {
